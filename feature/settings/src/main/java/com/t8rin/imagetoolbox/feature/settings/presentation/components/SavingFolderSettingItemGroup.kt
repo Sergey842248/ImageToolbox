@@ -48,7 +48,8 @@ import com.t8rin.imagetoolbox.core.ui.widget.preferences.PreferenceItem
 @Composable
 fun SavingFolderSettingItemGroup(
     modifier: Modifier = Modifier,
-    onValueChange: (Uri?) -> Unit
+    onValueChange: (Uri?) -> Unit,
+    onOverwriteToggle: () -> Unit
 ) {
     Column(modifier) {
         val context = LocalContext.current
@@ -117,6 +118,14 @@ fun SavingFolderSettingItemGroup(
                     ).value,
                     shape = ShapeDefaults.bottom
                 )
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        OverwriteFilesSettingItem(
+            onClick = onOverwriteToggle,
+            shape = ShapeDefaults.bottom,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp)
         )
     }
 }
