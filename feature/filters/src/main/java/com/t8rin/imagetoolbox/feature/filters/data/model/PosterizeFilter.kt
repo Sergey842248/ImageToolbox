@@ -17,20 +17,20 @@
 
 package com.t8rin.imagetoolbox.feature.filters.data.model
 
-
+import android.content.Context
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
-import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
 import com.t8rin.imagetoolbox.feature.filters.data.transformation.GPUFilterTransformation
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
 import jp.co.cyberagent.android.gpuimage.filter.GPUImagePosterizeFilter
 
-@FilterInject
+
 internal class PosterizeFilter(
+    private val context: Context,
     override val value: Float = 5f,
-) : GPUFilterTransformation(), Filter.Posterize {
+) : GPUFilterTransformation(context), Filter.Posterize {
 
     override val cacheKey: String
-        get() = value.hashCode().toString()
+        get() = (value to context).hashCode().toString()
 
     override fun createFilter(): GPUImageFilter = GPUImagePosterizeFilter(value.toInt())
 

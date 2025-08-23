@@ -22,11 +22,9 @@ import com.jhlabs.JhFilter
 import com.jhlabs.PinchFilter
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
 import com.t8rin.imagetoolbox.core.filters.domain.model.params.PinchParams
-import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
 import com.t8rin.imagetoolbox.feature.filters.data.transformation.JhFilterTransformation
 import kotlin.math.max
 
-@FilterInject
 internal class PinchFilter(
     override val value: PinchParams = PinchParams.Default
 ) : JhFilterTransformation(), Filter.Pinch {

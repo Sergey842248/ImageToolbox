@@ -17,6 +17,7 @@
 
 package com.t8rin.imagetoolbox.feature.filters.data.model
 
+import android.content.Context
 import android.graphics.Bitmap
 import androidx.compose.ui.graphics.Color
 import com.t8rin.imagetoolbox.core.data.image.utils.ColorUtils.toModel
@@ -25,10 +26,9 @@ import com.t8rin.imagetoolbox.core.domain.transformation.ChainTransformation
 import com.t8rin.imagetoolbox.core.domain.transformation.Transformation
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
 import com.t8rin.imagetoolbox.core.filters.domain.model.wrap
-import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
 
-@FilterInject
 internal class NeonFilter(
+    private val context: Context,
     override val value: Triple<Float, Float, ColorModel> = Triple(
         first = 1f,
         second = 0.26f,
@@ -37,12 +37,12 @@ internal class NeonFilter(
 ) : ChainTransformation<Bitmap>, Filter.Neon {
 
     override val cacheKey: String
-        get() = value.hashCode().toString()
+        get() = (value).hashCode().toString()
 
     override fun getTransformations(): List<Transformation<Bitmap>> = listOf(
-        SharpenFilter(value.second),
-        SobelEdgeDetectionFilter(value.first),
-        RGBFilter(value.third.wrap())
+        SharpenFilter(context, value.second),
+        SobelEdgeDetectionFilter(context, value.first),
+        RGBFilter(context, value.third.wrap())
     )
 
 }

@@ -50,7 +50,7 @@ import com.t8rin.imagetoolbox.core.filters.domain.model.params.VoronoiCrystalliz
 import com.t8rin.imagetoolbox.core.filters.domain.model.params.WaterParams
 
 
-interface Filter<Value : Any> : VisibilityOwner {
+interface Filter<Value> : VisibilityOwner {
     val value: Value
 
     interface BilaterialBlur : Filter<BilaterialBlurParams>
@@ -59,17 +59,17 @@ interface Filter<Value : Any> : VisibilityOwner {
     interface Brightness : FloatFilter
     interface BulgeDistortion : PairFloatFilter
     interface CGAColorSpace : SimpleFilter
-    interface ColorBalance : FloatArrayFilter
-    interface ColorOverlay : WrapperFilter<Color>
-    interface ColorMatrix4x4 : FloatArrayFilter
+    interface ColorBalance : Filter<FloatArray>
+    interface Color : WrapperFilter<ColorModel>
+    interface ColorMatrix4x4 : Filter<FloatArray>
     interface Contrast : FloatFilter
-    interface Convolution3x3 : FloatArrayFilter
+    interface Convolution3x3 : Filter<FloatArray>
     interface Crosshatch : PairFloatFilter
     interface Dilation : FloatBooleanFilter
     interface Emboss : FloatFilter
     interface Exposure : FloatFilter
-    interface FalseColor : PairFilter<Color, Color>
-    interface FastBlur : PairFloatFilter
+    interface FalseColor : PairFilter<ColorModel, ColorModel>
+    interface FastBlur : PairFilter<Float, Int>
     interface Gamma : FloatFilter
     interface GaussianBlur : TripleFilter<Float, Float, BlurEdgeMode>
     interface GlassSphereRefraction : PairFloatFilter
@@ -80,12 +80,12 @@ interface Filter<Value : Any> : VisibilityOwner {
     interface Kuwahara : FloatFilter
     interface Laplacian : SimpleFilter
     interface Lookup : FloatFilter
-    interface Monochrome : FloatColorModelFilter
+    interface Monochrome : PairFilter<Float, ColorModel>
     interface Negative : SimpleFilter
     interface NonMaximumSuppression : SimpleFilter
     interface Opacity : FloatFilter
     interface Posterize : FloatFilter
-    interface RGB : WrapperFilter<Color>
+    interface RGB : WrapperFilter<ColorModel>
     interface Saturation : FloatBooleanFilter
     interface Sepia : SimpleFilter
     interface Sharpen : FloatFilter
@@ -94,23 +94,23 @@ interface Filter<Value : Any> : VisibilityOwner {
     interface SobelEdgeDetection : FloatFilter
     interface Solarize : FloatFilter
     interface SphereRefraction : PairFloatFilter
-    interface StackBlur : PairFloatFilter
-    interface SwirlDistortion : QuadFloatFilter
+    interface StackBlur : PairFilter<Float, Int>
+    interface SwirlDistortion : PairFloatFilter
     interface Toon : PairFloatFilter
     interface Vibrance : FloatFilter
-    interface Vignette : TripleFilter<Float, Float, Color>
+    interface Vignette : TripleFilter<Float, Float, ColorModel>
     interface WeakPixel : SimpleFilter
     interface WhiteBalance : PairFloatFilter
     interface ZoomBlur : TripleFloatFilter
     interface Pixelation : FloatFilter
     interface EnhancedPixelation : FloatFilter
-    interface StrokePixelation : FloatColorModelFilter
+    interface StrokePixelation : PairFilter<Float, ColorModel>
     interface CirclePixelation : FloatFilter
     interface DiamondPixelation : FloatFilter
     interface EnhancedCirclePixelation : FloatFilter
     interface EnhancedDiamondPixelation : FloatFilter
-    interface ReplaceColor : TripleFilter<Float, Color, Color>
-    interface RemoveColor : FloatColorModelFilter
+    interface ReplaceColor : TripleFilter<Float, ColorModel, ColorModel>
+    interface RemoveColor : PairFilter<Float, ColorModel>
     interface SideFade : Filter<SideFadeParams>
     interface BayerTwoDithering : FloatBooleanFilter
     interface BayerThreeDithering : FloatBooleanFilter
@@ -137,25 +137,25 @@ interface Filter<Value : Any> : VisibilityOwner {
     interface EnhancedGlitch : Filter<GlitchParams>
     interface TentBlur : FloatFilter
     interface Erode : FloatBooleanFilter
-    interface AnisotropicDiffusion : TripleFloatFilter
-    interface HorizontalWindStagger : TripleFilter<Float, Int, Color>
-    interface FastBilaterialBlur : TripleFloatFilter
+    interface AnisotropicDiffusion : TripleFilter<Int, Float, Float>
+    interface HorizontalWindStagger : TripleFilter<Float, Int, ColorModel>
+    interface FastBilaterialBlur : TripleFilter<Int, Float, Float>
     interface PoissonBlur : FloatFilter
     interface LogarithmicToneMapping : FloatFilter
     interface AcesFilmicToneMapping : FloatFilter
-    interface Crystallize : FloatColorModelFilter
+    interface Crystallize : PairFilter<Float, ColorModel>
     interface FractalGlass : PairFloatFilter
     interface Marble : TripleFloatFilter
-    interface Oil : PairFloatFilter
+    interface Oil : PairFilter<Int, Float>
     interface WaterEffect : Filter<WaterParams>
     interface HableFilmicToneMapping : FloatFilter
     interface AcesHillToneMapping : FloatFilter
     interface HejlBurgessToneMapping : FloatFilter
     interface PerlinDistortion : TripleFloatFilter
     interface Grayscale : TripleFloatFilter
-    interface Dehaze : PairFloatFilter
+    interface Dehaze : PairFilter<Int, Float>
     interface Threshold : FloatFilter
-    interface ColorMatrix3x3 : FloatArrayFilter
+    interface ColorMatrix3x3 : Filter<FloatArray>
     interface Polaroid : SimpleFilter
     interface Cool : SimpleFilter
     interface Warm : SimpleFilter
@@ -199,10 +199,10 @@ interface Filter<Value : Any> : VisibilityOwner {
     interface SpacePortal : SimpleFilter
     interface RedSwirl : SimpleFilter
     interface DigitalCode : SimpleFilter
-    interface Bokeh : PairFloatFilter
-    interface Neon : TripleFilter<Float, Float, Color>
+    interface Bokeh : PairFilter<Int, Int>
+    interface Neon : TripleFilter<Float, Float, ColorModel>
     interface OldTv : SimpleFilter
-    interface ShuffleBlur : PairFloatFilter
+    interface ShuffleBlur : PairFilter<Int, Float>
     interface Mobius : TripleFloatFilter
     interface Uchimura : FloatFilter
     interface Aldridge : PairFloatFilter
@@ -221,18 +221,18 @@ interface Filter<Value : Any> : VisibilityOwner {
     interface FastGaussianBlur4D : FloatFilter
     interface EqualizeHistogram : SimpleFilter
     interface EqualizeHistogramHSV : FloatFilter
-    interface EqualizeHistogramPixelation : PairFloatFilter
-    interface EqualizeHistogramAdaptive : PairFloatFilter
-    interface EqualizeHistogramAdaptiveLUV : TripleFloatFilter
-    interface EqualizeHistogramAdaptiveLAB : TripleFloatFilter
-    interface Clahe : TripleFloatFilter
+    interface EqualizeHistogramPixelation : PairFilter<Int, Int>
+    interface EqualizeHistogramAdaptive : PairFilter<Int, Int>
+    interface EqualizeHistogramAdaptiveLUV : TripleFilter<Int, Int, Int>
+    interface EqualizeHistogramAdaptiveLAB : TripleFilter<Int, Int, Int>
+    interface Clahe : TripleFilter<Float, Int, Int>
     interface ClaheLUV : Filter<ClaheParams>
     interface ClaheLAB : Filter<ClaheParams>
-    interface CropToContent : FloatColorModelFilter
+    interface CropToContent : PairFilter<Float, ColorModel>
     interface ClaheHSL : Filter<ClaheParams>
     interface ClaheHSV : Filter<ClaheParams>
-    interface EqualizeHistogramAdaptiveHSV : TripleFloatFilter
-    interface EqualizeHistogramAdaptiveHSL : TripleFloatFilter
+    interface EqualizeHistogramAdaptiveHSV : TripleFilter<Int, Int, Int>
+    interface EqualizeHistogramAdaptiveHSL : TripleFilter<Int, Int, Int>
     interface LinearBoxBlur : PairFilter<Int, TransferFunc>
     interface LinearTentBlur : PairFilter<Float, TransferFunc>
     interface LinearGaussianBoxBlur : PairFilter<Float, TransferFunc>
@@ -241,31 +241,31 @@ interface Filter<Value : Any> : VisibilityOwner {
     interface LinearFastGaussianBlurNext : TripleFilter<Int, TransferFunc, BlurEdgeMode>
     interface LinearFastGaussianBlur : TripleFilter<Int, TransferFunc, BlurEdgeMode>
     interface LinearGaussianBlur : Filter<LinearGaussianParams>
-    interface LowPoly : FloatBooleanFilter
-    interface SandPainting : TripleFilter<Int, Int, Color>
-    interface PaletteTransfer : FileImageFilter
+    interface LowPoly : PairFilter<Int, Boolean>
+    interface SandPainting : TripleFilter<Int, Int, ColorModel>
+    interface PaletteTransfer : PairFilter<Float, ImageModel>
     interface EnhancedOil : FloatFilter
     interface SimpleOldTv : SimpleFilter
     interface HDR : SimpleFilter
     interface SimpleSketch : SimpleFilter
     interface Gotham : SimpleFilter
-    interface ColorPoster : FloatColorModelFilter
-    interface TriTone : TripleFilter<Color, Color, Color>
+    interface ColorPoster : PairFilter<Float, ColorModel>
+    interface TriTone : TripleFilter<ColorModel, ColorModel, ColorModel>
     interface ClaheOklch : Filter<ClaheParams>
     interface ClaheJzazbz : Filter<ClaheParams>
     interface ClaheOklab : Filter<ClaheParams>
-    interface PolkaDot : TripleFilter<Int, Int, Color>
-    interface Clustered2x2Dithering : BooleanFilter
-    interface Clustered4x4Dithering : BooleanFilter
-    interface Clustered8x8Dithering : BooleanFilter
-    interface YililomaDithering : BooleanFilter
-    interface LUT512x512 : FileImageFilter
+    interface PolkaDot : TripleFilter<Int, Int, ColorModel>
+    interface Clustered2x2Dithering : Filter<Boolean>
+    interface Clustered4x4Dithering : Filter<Boolean>
+    interface Clustered8x8Dithering : Filter<Boolean>
+    interface YililomaDithering : Filter<Boolean>
+    interface LUT512x512 : PairFilter<Float, ImageModel>
     interface Amatorka : FloatFilter
     interface MissEtikate : FloatFilter
     interface SoftElegance : FloatFilter
     interface SoftEleganceVariant : FloatFilter
-    interface PaletteTransferVariant : TripleFilter<Float, PaletteTransferSpace, Image>
-    interface CubeLut : FileFilter
+    interface PaletteTransferVariant : TripleFilter<Float, PaletteTransferSpace, ImageModel>
+    interface CubeLut : PairFilter<Float, FileModel>
     interface BleachBypass : FloatFilter
     interface Candlelight : FloatFilter
     interface DropBlues : FloatFilter
@@ -274,14 +274,14 @@ interface Filter<Value : Any> : VisibilityOwner {
     interface FilmStock50 : FloatFilter
     interface FoggyNight : FloatFilter
     interface Kodak : FloatFilter
-    interface PopArt : TripleFilter<Float, Color, PopArtBlendingMode>
+    interface PopArt : TripleFilter<Float, ColorModel, PopArtBlendingMode>
     interface Celluloid : FloatFilter
     interface Coffee : FloatFilter
     interface GoldenForest : FloatFilter
     interface Greenish : FloatFilter
     interface RetroYellow : FloatFilter
     interface AutoCrop : FloatFilter
-    interface SpotHeal : TripleFilter<Image, Float, Int>
+    interface SpotHeal : TripleFilter<ImageModel, Float, Int>
     interface Opening : FloatBooleanFilter
     interface Closing : FloatBooleanFilter
     interface MorphologicalGradient : FloatBooleanFilter
@@ -297,7 +297,7 @@ interface Filter<Value : Any> : VisibilityOwner {
     interface Kaleidoscope : Filter<KaleidoscopeParams>
     interface ChannelMix : Filter<ChannelMixParams>
     interface ColorHalftone : QuadFloatFilter
-    interface Contour : QuadFilter<Float, Float, Float, Color>
+    interface Contour : QuadFilter<Float, Float, Float, ColorModel>
     interface VoronoiCrystallize : Filter<VoronoiCrystallizeParams>
     interface Despeckle : SimpleFilter
     interface Diffuse : FloatFilter
@@ -344,7 +344,7 @@ interface Filter<Value : Any> : VisibilityOwner {
     interface CropOrPerspective : Filter<CropOrPerspectiveParams>
     interface Turbo : SimpleFilter
     interface DeepGreen : SimpleFilter
-    interface LensCorrection : FileFilter
+    interface LensCorrection : PairFilter<Float, FileModel>
 }
 
 interface SimpleFilter : Filter<Unit>
@@ -357,15 +357,6 @@ interface PairFloatFilter : PairFilter<Float, Float>
 interface TripleFloatFilter : TripleFilter<Float, Float, Float>
 interface QuadFloatFilter : QuadFilter<Float, Float, Float, Float>
 
-interface FloatArrayFilter : Filter<FloatArray>
-interface FileFilter : PairFilter<Float, File>
-interface FileImageFilter : PairFilter<Float, Image>
 interface FloatBooleanFilter : PairFilter<Float, Boolean>
-interface FloatColorModelFilter : PairFilter<Float, Color>
-interface BooleanFilter : Filter<Boolean>
 
 interface WrapperFilter<Wrapped : Any> : Filter<FilterValueWrapper<Wrapped>>
-
-private typealias Image = ImageModel
-private typealias File = FileModel
-private typealias Color = ColorModel

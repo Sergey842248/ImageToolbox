@@ -22,7 +22,6 @@ import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
 import com.t8rin.imagetoolbox.core.domain.transformation.Transformation
 import com.t8rin.imagetoolbox.core.filters.domain.model.enums.ColorMapType
 import com.t8rin.opencv_tools.color_map.ColorMap
-import com.t8rin.opencv_tools.color_map.model.ColorMapType as NativeColorMapType
 
 internal abstract class ColorMapTransformation(
     val type: ColorMapType
@@ -36,7 +35,7 @@ internal abstract class ColorMapTransformation(
         size: IntegerSize
     ): Bitmap = ColorMap.apply(
         bitmap = input,
-        map = NativeColorMapType.valueOf(type.name)
+        map = ColorMap.Type.valueOf(type.name)
     )
 
 }

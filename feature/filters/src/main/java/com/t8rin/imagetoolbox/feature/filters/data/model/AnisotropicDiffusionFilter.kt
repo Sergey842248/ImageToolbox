@@ -22,12 +22,9 @@ import com.awxkee.aire.Aire
 import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
 import com.t8rin.imagetoolbox.core.domain.transformation.Transformation
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
-import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
-import kotlin.math.roundToInt
 
-@FilterInject
 internal class AnisotropicDiffusionFilter(
-    override val value: Triple<Float, Float, Float> = Triple(20f, 0.6f, 0.5f)
+    override val value: Triple<Int, Float, Float> = Triple(20, 0.6f, 0.5f)
 ) : Transformation<Bitmap>, Filter.AnisotropicDiffusion {
 
     override val cacheKey: String
@@ -38,7 +35,7 @@ internal class AnisotropicDiffusionFilter(
         size: IntegerSize
     ): Bitmap = Aire.anisotropicDiffusion(
         bitmap = input,
-        numOfSteps = value.first.roundToInt(),
+        numOfSteps = value.first,
         conduction = value.second,
         diffusion = value.third
     )

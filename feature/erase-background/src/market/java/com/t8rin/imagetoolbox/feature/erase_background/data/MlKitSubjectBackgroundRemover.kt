@@ -28,15 +28,13 @@ import com.google.mlkit.vision.segmentation.subject.SubjectSegmenterOptions
 @RequiresApi(api = Build.VERSION_CODES.N)
 internal object MlKitSubjectBackgroundRemover {
 
-    private var segment: SubjectSegmenter? = null
+    private val segment: SubjectSegmenter
 
     init {
-        runCatching {
-            val segmentOptions = SubjectSegmenterOptions.Builder()
-                .enableForegroundBitmap()
-                .build()
-            segment = SubjectSegmentation.getClient(segmentOptions)
-        }
+        val segmentOptions = SubjectSegmenterOptions.Builder()
+            .enableForegroundBitmap()
+            .build()
+        segment = SubjectSegmentation.getClient(segmentOptions)
     }
 
 
@@ -53,9 +51,7 @@ internal object MlKitSubjectBackgroundRemover {
         //Generate a copy of bitmap just in case the if the bitmap is immutable.
         val copyBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
         val input = InputImage.fromBitmap(copyBitmap, 0)
-        val segmenter = segment ?: return onFinish(Result.failure(NoClassDefFoundError()))
-
-        segmenter.process(input)
+        segment.process(input)
             .addOnSuccessListener {
                 onFinish(Result.success(it?.foregroundBitmap ?: bitmap))
             }

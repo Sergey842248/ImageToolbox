@@ -49,11 +49,8 @@ import com.t8rin.imagetoolbox.core.ui.utils.helper.toCoil
 import com.t8rin.imagetoolbox.core.ui.utils.state.update
 import com.t8rin.imagetoolbox.feature.compare.presentation.components.CompareType
 import com.t8rin.imagetoolbox.feature.compare.presentation.components.PixelByPixelCompareState
-import com.t8rin.imagetoolbox.feature.compare.presentation.components.model.CompareData
-import com.t8rin.imagetoolbox.feature.compare.presentation.components.model.CompareEntry
-import com.t8rin.imagetoolbox.feature.compare.presentation.components.model.ifNotEmpty
 import com.t8rin.opencv_tools.image_comparison.ImageDiffTool
-import com.t8rin.opencv_tools.image_comparison.model.ComparisonType
+import com.t8rin.opencv_tools.image_comparison.ImageDiffTool.ComparisonType
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -91,7 +88,8 @@ class CompareComponent @AssistedInject internal constructor(
         _compareProgress.update { progress }
     }
 
-    private val _bitmapData: MutableState<CompareData?> = mutableStateOf(null)
+    private val _bitmapData: MutableState<Pair<Pair<Uri, Bitmap>?, Pair<Uri, Bitmap>?>?> =
+        mutableStateOf(null)
     val bitmapData by _bitmapData
 
     private val _rotation: MutableState<Float> = mutableFloatStateOf(0f)
@@ -116,31 +114,30 @@ class CompareComponent @AssistedInject internal constructor(
             else 90f
         }
         componentScope.launch {
-            bitmapData?.ifNotEmpty { first, second ->
-                _isImageLoading.value = true
-                _bitmapData.value = with(imageTransformer) {
-                    CompareData(
-                        first = first.copy(
-                            image = rotate(
+            _bitmapData.value?.let { (f, s) ->
+                if (f != null && s != null) {
+                    _isImageLoading.value = true
+                    _bitmapData.value = with(imageTransformer) {
+                        bitmapData?.first?.copy(
+                            second = rotate(
                                 image = rotate(
-                                    image = first.image,
+                                    image = f.second,
                                     degrees = 180f - old
                                 ),
                                 degrees = rotation
                             )
-                        ),
-                        second = second.copy(
-                            image = rotate(
+                        ) to bitmapData?.second?.copy(
+                            second = rotate(
                                 image = rotate(
-                                    image = second.image,
+                                    image = s.second,
                                     degrees = 180f - old
                                 ),
                                 degrees = rotation
                             )
                         )
-                    )
+                    }
+                    _isImageLoading.value = false
                 }
-                _isImageLoading.value = false
             }
         }
     }
@@ -148,7 +145,7 @@ class CompareComponent @AssistedInject internal constructor(
     fun swap() {
         componentScope.launch {
             _isImageLoading.value = true
-            _bitmapData.value = bitmapData?.swap()
+            _bitmapData.value = _bitmapData.value?.run { second to first }
             _isImageLoading.value = false
         }
     }
@@ -161,16 +158,7 @@ class CompareComponent @AssistedInject internal constructor(
             val data = getBitmapByUri(uris.first) to getBitmapByUri(uris.second)
             if (data.first == null || data.second == null) onFailure()
             else {
-                _bitmapData.value = CompareData(
-                    first = CompareEntry(
-                        uri = uris.first,
-                        image = data.first!!
-                    ),
-                    second = CompareEntry(
-                        uri = uris.second,
-                        image = data.second!!
-                    )
-                )
+                _bitmapData.value = (uris.first to data.first!!) to (uris.second to data.second!!)
                 setCompareProgress(
                     if (compareType == CompareType.PixelByPixel) 4f
                     else 50f
@@ -270,18 +258,15 @@ class CompareComponent @AssistedInject internal constructor(
         }
 
     private fun getOverlappedImage(): Bitmap? {
-        return bitmapData?.ifNotEmpty { before, after ->
-            before.image.overlay(
-                overlay = after.image,
-                percent = compareProgress
-            )
+        return _bitmapData.value?.let { (b, a) ->
+            a?.second?.let { b?.second?.overlay(it, compareProgress) }
         }
     }
 
     private suspend fun getResultImage(): Bitmap? = coroutineScope {
         when (compareType) {
             CompareType.PixelByPixel -> imageTransformer.transform(
-                image = bitmapData?.first?.image ?: return@coroutineScope null,
+                image = bitmapData?.first?.second ?: return@coroutineScope null,
                 transformations = listOf(createPixelByPixelTransformation().asDomain())
             )
 
@@ -291,7 +276,7 @@ class CompareComponent @AssistedInject internal constructor(
     }
 
     fun getImagePreview(): Bitmap? = when (compareType) {
-        CompareType.PixelByPixel -> bitmapData?.first?.image
+        CompareType.PixelByPixel -> bitmapData?.first?.second
         CompareType.Slide -> getOverlappedImage()
         else -> null
     }
@@ -335,7 +320,7 @@ class CompareComponent @AssistedInject internal constructor(
         GenericTransformation<Bitmap> { first ->
             ImageDiffTool.highlightDifferences(
                 input = first,
-                other = bitmapData?.second?.image
+                other = bitmapData?.second?.second
                     ?: return@GenericTransformation first,
                 comparisonType = ComparisonType.valueOf(pixelByPixelCompareState.comparisonType.name),
                 highlightColor = pixelByPixelCompareState.highlightColor.toArgb(),

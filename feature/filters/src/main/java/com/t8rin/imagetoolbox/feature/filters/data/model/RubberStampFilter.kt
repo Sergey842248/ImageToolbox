@@ -22,11 +22,9 @@ import com.jhlabs.JhFilter
 import com.jhlabs.StampFilter
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
 import com.t8rin.imagetoolbox.core.filters.domain.model.params.RubberStampParams
-import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
 import com.t8rin.imagetoolbox.feature.filters.data.transformation.JhFilterTransformation
 import kotlin.math.max
 
-@FilterInject
 internal class RubberStampFilter(
     override val value: RubberStampParams = RubberStampParams.Default
 ) : JhFilterTransformation(), Filter.RubberStamp {

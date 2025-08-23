@@ -351,17 +351,14 @@ fun DrawModeSelector(
             var showFilterSelection by rememberSaveable {
                 mutableStateOf(false)
             }
-            AnimatedContent(
-                targetState = filter,
-                contentKey = { it != null }
-            ) { filter ->
+            AnimatedContent(targetState = filter != null) { notNull ->
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.padding(horizontal = 8.dp)
                 ) {
-                    if (filter != null) {
+                    if (notNull && filter != null) {
                         FilterItem(
-                            filter = filter,
+                            filter = filter!!,
                             showDragHandle = false,
                             onRemove = {
                                 onValueChange(
@@ -370,7 +367,7 @@ fun DrawModeSelector(
                             },
                             onFilterChange = { value ->
                                 onValueChange(
-                                    DrawMode.PathEffect.Custom(filter.copy(value))
+                                    DrawMode.PathEffect.Custom(filter!!.copy(value))
                                 )
                             },
                             backgroundColor = MaterialTheme.colorScheme.surface,

@@ -19,20 +19,25 @@ package com.t8rin.imagetoolbox.core.domain.utils
 
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelChildren
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
-/**
- * [Job] delegate which automatically cancels previous instance after setting new value,
- * @param onCancelled called when previous job is about to cancel
- **/
-private class SmartJobImpl(
+internal class SmartJob<T>(
     private val onCancelled: (Job) -> Unit = {}
-) : ReadWriteDelegate<Job?> {
+) : ReadWriteProperty<T, Job?> {
 
     private var job: Job? = null
 
-    override fun get(): Job? = job
+    override fun getValue(
+        thisRef: T,
+        property: KProperty<*>
+    ): Job? = job
 
-    override fun set(value: Job?) {
+    override fun setValue(
+        thisRef: T,
+        property: KProperty<*>,
+        value: Job?
+    ) {
         job?.apply {
             onCancelled(this)
             cancelChildren()
@@ -42,10 +47,6 @@ private class SmartJobImpl(
     }
 }
 
-/**
- * [Job] delegate which automatically cancels previous instance after setting new value,
- * @param onCancelled called when previous job is about to cancel
- **/
-fun smartJob(
+fun <T> smartJob(
     onCancelled: (Job) -> Unit = {}
-): ReadWriteDelegate<Job?> = SmartJobImpl(onCancelled)
+): ReadWriteProperty<T, Job?> = SmartJob(onCancelled)

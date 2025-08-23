@@ -18,18 +18,20 @@
 package com.t8rin.imagetoolbox.feature.filters.data.model
 
 import android.graphics.Bitmap
+import com.t8rin.imagetoolbox.core.domain.image.ImageGetter
 import com.t8rin.imagetoolbox.core.domain.model.ImageModel
 import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
 import com.t8rin.imagetoolbox.core.domain.transformation.Transformation
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
-import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
 import com.t8rin.imagetoolbox.core.resources.R
-import com.t8rin.imagetoolbox.feature.filters.data.utils.image.loadBitmap
 import com.t8rin.trickle.Trickle
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 
-@FilterInject
-internal class PaletteTransferFilter(
-    override val value: Pair<Float, ImageModel> = 1f to ImageModel(R.drawable.filter_preview_source_2),
+internal class PaletteTransferFilter @AssistedInject internal constructor(
+    @Assisted override val value: Pair<Float, ImageModel> = 1f to ImageModel(R.drawable.filter_preview_source_2),
+    private val imageGetter: ImageGetter<Bitmap>
 ) : Transformation<Bitmap>, Filter.PaletteTransfer {
 
     override val cacheKey: String
@@ -39,13 +41,25 @@ internal class PaletteTransferFilter(
         input: Bitmap,
         size: IntegerSize
     ): Bitmap {
-        val reference = value.second.data.loadBitmap(1000) ?: return input
+        val reference = imageGetter.getImage(
+            data = value.second.data,
+            size = IntegerSize(1000, 1000)
+        ) ?: return input
 
         return Trickle.transferPalette(
             source = reference,
             target = input,
             intensity = value.first
         )
+    }
+
+    @AssistedFactory
+    interface Factory {
+
+        operator fun invoke(
+            @Assisted value: Pair<Float, ImageModel> = 1f to ImageModel(R.drawable.filter_preview_source_2)
+        ): PaletteTransferFilter
+
     }
 
 }

@@ -17,21 +17,21 @@
 
 package com.t8rin.imagetoolbox.feature.filters.data.model
 
-
+import android.content.Context
 import android.graphics.PointF
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
-import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
 import com.t8rin.imagetoolbox.feature.filters.data.transformation.GPUFilterTransformation
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageGlassSphereFilter
 
-@FilterInject
+
 internal class GlassSphereRefractionFilter(
+    private val context: Context,
     override val value: Pair<Float, Float> = 0.25f to 0.71f,
-) : GPUFilterTransformation(), Filter.GlassSphereRefraction {
+) : GPUFilterTransformation(context), Filter.GlassSphereRefraction {
 
     override val cacheKey: String
-        get() = value.hashCode().toString()
+        get() = (value to context).hashCode().toString()
 
     override fun createFilter(): GPUImageFilter = GPUImageGlassSphereFilter(
         PointF(0.5f, 0.5f),

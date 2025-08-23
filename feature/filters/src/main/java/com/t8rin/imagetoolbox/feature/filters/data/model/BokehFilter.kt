@@ -26,13 +26,10 @@ import com.awxkee.aire.Scalar
 import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
 import com.t8rin.imagetoolbox.core.domain.transformation.Transformation
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
-import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
 import com.t8rin.trickle.TrickleUtils.checkHasAlpha
-import kotlin.math.roundToInt
 
-@FilterInject
 internal class BokehFilter(
-    override val value: Pair<Float, Float> = 6f to 6f
+    override val value: Pair<Int, Int> = 6 to 6
 ) : Transformation<Bitmap>, Filter.Bokeh {
 
     override val cacheKey: String
@@ -44,15 +41,15 @@ internal class BokehFilter(
     ): Bitmap = Aire.morphology(
         bitmap = input,
         kernel = Aire.getBokehKernel(
-            kernelSize = value.first.roundToInt(),
-            sides = value.second.roundToInt()
+            kernelSize = value.first,
+            sides = value.second
         ),
         morphOp = MorphOp.DILATE,
         morphOpMode = if (input.checkHasAlpha()) MorphOpMode.RGBA
         else MorphOpMode.RGB,
         borderMode = EdgeMode.REFLECT_101,
-        kernelHeight = value.first.roundToInt(),
-        kernelWidth = value.first.roundToInt(),
+        kernelHeight = value.first,
+        kernelWidth = value.first,
         borderScalar = Scalar.ZEROS
     )
 

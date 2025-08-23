@@ -17,21 +17,21 @@
 
 package com.t8rin.imagetoolbox.feature.filters.data.model
 
-
+import android.content.Context
 import android.graphics.PointF
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
-import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
 import com.t8rin.imagetoolbox.feature.filters.data.transformation.GPUFilterTransformation
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageZoomBlurFilter
 
-@FilterInject
+
 internal class ZoomBlurFilter(
+    private val context: Context,
     override val value: Triple<Float, Float, Float> = Triple(0.5f, 0.5f, 5f),
-) : GPUFilterTransformation(), Filter.ZoomBlur {
+) : GPUFilterTransformation(context), Filter.ZoomBlur {
 
     override val cacheKey: String
-        get() = value.hashCode().toString()
+        get() = (value to context).hashCode().toString()
 
 
     override fun createFilter(): GPUImageFilter =

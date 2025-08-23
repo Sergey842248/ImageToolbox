@@ -17,18 +17,19 @@
 
 package com.t8rin.imagetoolbox.feature.filters.data.model
 
+import android.content.Context
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
-import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
 import com.t8rin.imagetoolbox.feature.filters.data.transformation.GPUFilterTransformation
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageLuminanceFilter
 
-@FilterInject
+
 internal class BlackAndWhiteFilter(
+    private val context: Context,
     override val value: Unit = Unit,
-) : GPUFilterTransformation(), Filter.BlackAndWhite {
+) : GPUFilterTransformation(context), Filter.BlackAndWhite {
     override val cacheKey: String
-        get() = value.hashCode().toString()
+        get() = (value to context).hashCode().toString()
 
     override fun createFilter(): GPUImageFilter = GPUImageLuminanceFilter()
 }

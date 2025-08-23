@@ -21,7 +21,6 @@ import android.app.Application
 import androidx.compose.foundation.ComposeFoundationFlags
 import com.arkivanov.decompose.DecomposeExperimentFlags
 import com.t8rin.imagetoolbox.app.presentation.components.utils.attachLogWriter
-import com.t8rin.imagetoolbox.app.presentation.components.utils.initOpenCV
 import com.t8rin.imagetoolbox.app.presentation.components.utils.registerSecurityProviders
 import com.t8rin.imagetoolbox.core.crash.presentation.components.applyGlobalExceptionHandler
 import com.t8rin.imagetoolbox.core.ui.utils.initAppContext
@@ -33,14 +32,15 @@ class ImageToolboxApplication : Application() {
 
     init {
         DecomposeExperimentFlags.duplicateConfigurationsEnabled = true
+
         ComposeFoundationFlags.isPausableCompositionInPrefetchEnabled = true
+
         registerSecurityProviders()
     }
 
     override fun onCreate() {
         super.onCreate()
         initAppContext()
-        initOpenCV()
         attachLogWriter()
         applyGlobalExceptionHandler()
     }

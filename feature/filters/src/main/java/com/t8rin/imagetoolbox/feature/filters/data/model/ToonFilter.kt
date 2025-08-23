@@ -17,20 +17,24 @@
 
 package com.t8rin.imagetoolbox.feature.filters.data.model
 
+import android.content.Context
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
-import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
 import com.t8rin.imagetoolbox.feature.filters.data.transformation.GPUFilterTransformation
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageToonFilter
 
-@FilterInject
+
 internal class ToonFilter(
+    private val context: Context,
     override val value: Pair<Float, Float> = 0.2f to 10f,
-) : GPUFilterTransformation(), Filter.Toon {
+) : GPUFilterTransformation(context), Filter.Toon {
 
     override val cacheKey: String
-        get() = value.hashCode().toString()
+        get() = (value to context).hashCode().toString()
 
     override fun createFilter(): GPUImageFilter =
-        GPUImageToonFilter(value.first, value.second)
+        GPUImageToonFilter(
+            /* threshold = */ value.first,
+            /* quantizationLevels = */value.second
+        )
 }

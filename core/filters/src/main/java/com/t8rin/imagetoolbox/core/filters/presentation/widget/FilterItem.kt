@@ -79,7 +79,7 @@ import com.t8rin.imagetoolbox.core.ui.widget.value.ValueDialog
 import com.t8rin.imagetoolbox.core.ui.widget.value.ValueText
 
 @Composable
-fun <T : Any> FilterItem(
+fun <T> FilterItem(
     filter: UiFilter<T>,
     showDragHandle: Boolean,
     onRemove: () -> Unit,

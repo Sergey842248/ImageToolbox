@@ -22,13 +22,11 @@ import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
 import com.t8rin.imagetoolbox.core.domain.transformation.Transformation
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
 import com.t8rin.imagetoolbox.core.filters.domain.model.params.CropOrPerspectiveParams
-import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
 import com.t8rin.opencv_tools.auto_straight.AutoStraighten
-import com.t8rin.opencv_tools.auto_straight.model.Corners
-import com.t8rin.opencv_tools.auto_straight.model.PointD
-import com.t8rin.opencv_tools.auto_straight.model.StraightenMode
+import com.t8rin.opencv_tools.auto_straight.AutoStraighten.Corners
+import com.t8rin.opencv_tools.auto_straight.AutoStraighten.Mode
+import com.t8rin.opencv_tools.auto_straight.AutoStraighten.PointD
 
-@FilterInject
 internal class CropOrPerspectiveFilter(
     override val value: CropOrPerspectiveParams = CropOrPerspectiveParams.Default
 ) : Transformation<Bitmap>, Filter.CropOrPerspective {
@@ -41,7 +39,7 @@ internal class CropOrPerspectiveFilter(
         size: IntegerSize
     ): Bitmap = AutoStraighten.process(
         input = input,
-        mode = StraightenMode.Manual(
+        mode = Mode.Manual(
             corners = Corners(
                 topLeft = PointD(
                     x = value.topLeft.first.toDouble(),

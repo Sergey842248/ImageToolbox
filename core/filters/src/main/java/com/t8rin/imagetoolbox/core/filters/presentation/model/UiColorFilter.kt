@@ -15,12 +15,20 @@
  * along with this program.  If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
  */
 
-plugins {
-    kotlin("jvm")
-    id("com.google.devtools.ksp")
-}
+package com.t8rin.imagetoolbox.core.filters.presentation.model
 
-dependencies {
-    implementation(kotlin("stdlib"))
-    implementation(libs.symbol.processing.api)
-}
+import androidx.compose.ui.graphics.Color
+import com.t8rin.imagetoolbox.core.domain.model.ColorModel
+import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
+import com.t8rin.imagetoolbox.core.filters.domain.model.FilterValueWrapper
+import com.t8rin.imagetoolbox.core.filters.domain.model.wrap
+import com.t8rin.imagetoolbox.core.resources.R
+import com.t8rin.imagetoolbox.core.ui.utils.helper.toModel
+
+
+class UiColorFilter(
+    override val value: FilterValueWrapper<ColorModel> = Color.Yellow.copy(0.3f).toModel().wrap(),
+) : UiFilter<FilterValueWrapper<ColorModel>>(
+    title = R.string.color_filter,
+    value = value
+), Filter.Color

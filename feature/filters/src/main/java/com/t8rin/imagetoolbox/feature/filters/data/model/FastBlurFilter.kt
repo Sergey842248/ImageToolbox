@@ -23,12 +23,11 @@ import com.t8rin.imagetoolbox.core.data.utils.safeConfig
 import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
 import com.t8rin.imagetoolbox.core.domain.transformation.Transformation
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
-import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
 import kotlin.math.roundToInt
 
-@FilterInject
+
 internal class FastBlurFilter(
-    override val value: Pair<Float, Float> = 0.5f to 5f,
+    override val value: Pair<Float, Int> = 0.5f to 5,
 ) : Transformation<Bitmap>, Filter.FastBlur {
     override val cacheKey: String
         get() = (value).hashCode().toString()
@@ -36,10 +35,7 @@ internal class FastBlurFilter(
     override suspend fun transform(
         input: Bitmap,
         size: IntegerSize
-    ): Bitmap = input.fastBlur(
-        scale = value.first,
-        radius = value.second.roundToInt()
-    )
+    ): Bitmap = input.fastBlur(value.first, value.second)
 
 }
 

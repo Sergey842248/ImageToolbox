@@ -17,16 +17,16 @@
 
 package com.t8rin.imagetoolbox.feature.filters.data.model
 
+import android.content.Context
 import android.graphics.Bitmap
 import androidx.compose.ui.graphics.Color
 import com.t8rin.imagetoolbox.core.data.image.utils.ColorUtils.toModel
 import com.t8rin.imagetoolbox.core.domain.transformation.ChainTransformation
 import com.t8rin.imagetoolbox.core.domain.transformation.Transformation
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
-import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
 
-@FilterInject
 internal class OldTvFilter(
+    private val context: Context,
     override val value: Unit
 ) : ChainTransformation<Bitmap>, Filter.OldTv {
 
@@ -35,7 +35,7 @@ internal class OldTvFilter(
 
     override fun getTransformations(): List<Transformation<Bitmap>> = listOf(
         GrainFilter(0.36f),
-        HazeFilter(0f to 0.3f),
+        HazeFilter(context, 0f to 0.3f),
         MonochromeFilter(1f to Color(0xFF1C3A00).toModel())
     )
 

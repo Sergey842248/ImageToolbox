@@ -17,6 +17,8 @@
 
 package com.t8rin.imagetoolbox.feature.compare.presentation.components
 
+import android.graphics.Bitmap
+import android.net.Uri
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -89,14 +91,13 @@ import com.t8rin.imagetoolbox.core.ui.widget.modifier.container
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.drawHorizontalStroke
 import com.t8rin.imagetoolbox.core.ui.widget.other.BoxAnimatedVisibility
 import com.t8rin.imagetoolbox.core.ui.widget.text.TitleItem
-import com.t8rin.imagetoolbox.feature.compare.presentation.components.model.CompareData
 import net.engawapg.lib.zoomable.ZoomableDefaults.defaultZoomOnDoubleTap
 import net.engawapg.lib.zoomable.rememberZoomState
 import net.engawapg.lib.zoomable.zoomable
 
 @Composable
 internal fun CompareScreenContent(
-    bitmapData: CompareData?,
+    bitmapData: Pair<Pair<Uri, Bitmap>?, Pair<Uri, Bitmap>?>?,
     compareType: CompareType,
     onCompareTypeSelected: (CompareType) -> Unit,
     isPortrait: Boolean,

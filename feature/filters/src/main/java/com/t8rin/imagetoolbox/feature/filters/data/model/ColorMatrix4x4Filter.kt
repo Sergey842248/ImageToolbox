@@ -17,25 +17,25 @@
 
 package com.t8rin.imagetoolbox.feature.filters.data.model
 
-
+import android.content.Context
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
-import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
 import com.t8rin.imagetoolbox.feature.filters.data.transformation.GPUFilterTransformation
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageColorMatrixFilter
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
 
-@FilterInject
+
 internal class ColorMatrix4x4Filter(
+    private val context: Context,
     override val value: FloatArray = floatArrayOf(
         1.0f, 0.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f, 0.0f,
         0.0f, 0.0f, 1.0f, 0.0f,
         0.0f, 0.0f, 0.0f, 1.0f
     ),
-) : GPUFilterTransformation(), Filter.ColorMatrix4x4 {
+) : GPUFilterTransformation(context), Filter.ColorMatrix4x4 {
 
     override val cacheKey: String
-        get() = value.hashCode().toString()
+        get() = (value to context).hashCode().toString()
 
     override fun createFilter(): GPUImageFilter = GPUImageColorMatrixFilter(1f, value)
 }

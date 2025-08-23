@@ -23,7 +23,7 @@ plugins {
 }
 
 android {
-    var isFoss = false
+    var isFoss = true
 
     val supportedAbi = arrayOf("armeabi-v7a", "arm64-v8a", "x86_64")
 
@@ -66,11 +66,6 @@ android {
     }
 
     buildTypes {
-        debug {
-            applicationIdSuffix = ".debug"
-            resValue("string", "app_launcher_name", "Image Toolbox DEBUG")
-            resValue("string", "file_provider", "com.t8rin.imagetoolbox.fileprovider.debug")
-        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -80,13 +75,7 @@ android {
             )
             resValue("string", "app_launcher_name", "Image Toolbox")
             resValue("string", "file_provider", "com.t8rin.imagetoolbox.fileprovider")
-        }
-        create("benchmark") {
-            initWith(buildTypes.getByName("release"))
             signingConfig = signingConfigs.getByName("debug")
-            matchingFallbacks += listOf("release")
-            isMinifyEnabled = false
-            isShrinkResources = false
         }
     }
 
@@ -136,9 +125,6 @@ dependencies {
     implementation(projects.feature.root)
     implementation(projects.feature.mediaPicker)
     implementation(projects.feature.quickTiles)
-
-    implementation(libs.toolbox.opencvTools)
-
     implementation(libs.bouncycastle.pkix)
     implementation(libs.bouncycastle.provider)
 }

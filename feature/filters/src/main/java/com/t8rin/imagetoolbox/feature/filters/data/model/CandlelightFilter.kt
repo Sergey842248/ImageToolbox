@@ -22,16 +22,15 @@ import com.t8rin.imagetoolbox.core.domain.model.ImageModel
 import com.t8rin.imagetoolbox.core.domain.transformation.ChainTransformation
 import com.t8rin.imagetoolbox.core.domain.transformation.Transformation
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
-import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
 import com.t8rin.imagetoolbox.core.resources.R
 
-@FilterInject
 internal class CandlelightFilter(
-    override val value: Float = 1f
+    override val value: Float = 1f,
+    private val lut512x512FilterFactory: LUT512x512Filter.Factory,
 ) : ChainTransformation<Bitmap>, Filter.Candlelight {
 
     override fun getTransformations(): List<Transformation<Bitmap>> = listOf(
-        LUT512x512Filter(value to ImageModel(R.drawable.lookup_candlelight))
+        lut512x512FilterFactory(value to ImageModel(R.drawable.lookup_candlelight))
     )
 
     override val cacheKey: String

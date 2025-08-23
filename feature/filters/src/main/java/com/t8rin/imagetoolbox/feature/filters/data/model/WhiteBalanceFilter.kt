@@ -17,19 +17,20 @@
 
 package com.t8rin.imagetoolbox.feature.filters.data.model
 
+import android.content.Context
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
-import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
 import com.t8rin.imagetoolbox.feature.filters.data.transformation.GPUFilterTransformation
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageWhiteBalanceFilter
 
-@FilterInject
+
 internal class WhiteBalanceFilter(
+    private val context: Context,
     override val value: Pair<Float, Float> = 7000.0f to 100f,
-) : GPUFilterTransformation(), Filter.WhiteBalance {
+) : GPUFilterTransformation(context), Filter.WhiteBalance {
 
     override val cacheKey: String
-        get() = value.hashCode().toString()
+        get() = (value to context).hashCode().toString()
 
     override fun createFilter(): GPUImageFilter =
         GPUImageWhiteBalanceFilter(value.first, value.second)

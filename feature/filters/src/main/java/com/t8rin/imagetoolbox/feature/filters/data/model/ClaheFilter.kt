@@ -22,12 +22,9 @@ import com.awxkee.aire.Aire
 import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
 import com.t8rin.imagetoolbox.core.domain.transformation.Transformation
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
-import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
-import kotlin.math.roundToInt
 
-@FilterInject
 internal class ClaheFilter(
-    override val value: Triple<Float, Float, Float> = Triple(0.5f, 8f, 8f)
+    override val value: Triple<Float, Int, Int> = Triple(0.5f, 8, 8)
 ) : Transformation<Bitmap>, Filter.Clahe {
 
     override val cacheKey: String
@@ -39,8 +36,8 @@ internal class ClaheFilter(
     ): Bitmap = Aire.clahe(
         bitmap = input,
         threshold = value.first,
-        gridSizeHorizontal = value.second.roundToInt(),
-        gridSizeVertical = value.third.roundToInt()
+        gridSizeHorizontal = value.second,
+        gridSizeVertical = value.third
     )
 
 }

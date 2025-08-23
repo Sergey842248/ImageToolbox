@@ -1,14 +1,14 @@
 [versions]
-androidMinSdk = "23"
+androidMinSdk = "21"
 androidTargetSdk = "36"
 androidCompileSdk = "36"
 
-versionName = "3.4.0-alpha02"
-versionCode = "183"
+versionName = "3.4.0-alpha01"
+versionCode = "182"
 
 jvmTarget = "17"
 
-imageToolboxLibs = "4.0.3"
+imageToolboxLibs = "3.9.4"
 trickle = "1.3.0"
 evaluator = "1.0.0"
 quickie = "1.14.0"
@@ -23,8 +23,8 @@ jxlCoderCoil = "2.4.1"
 jpegliCoder = "1.0.2"
 
 tesseract = "4.9.0"
-material3 = "1.5.0-alpha02"
-composeVersion = "1.10.0-alpha01"
+material3 = "1.5.0-alpha01"
+composeVersion = "1.9.0-rc01"
 materialIconsExtended = "1.7.8"
 androidx-datastorePreferencesAndroid = "1.1.7"
 appUpdateKtx = "2.1.0"
@@ -37,10 +37,10 @@ firebaseAnalyticsKtx = "22.5.0"
 google-segmentationSelfie = "16.0.0-beta6"
 google-subjectSegmentation = "16.0.0-beta1"
 detekt = "1.23.8"
-detektCompose = "0.4.27"
+detektCompose = "0.4.26"
 decompose = "3.3.0"
 
-kotlin = "2.2.10"
+kotlin = "2.2.0"
 agp = "8.12.0"
 hilt = "2.57"
 gms = "4.4.3"
@@ -48,9 +48,9 @@ gms = "4.4.3"
 ktor = "3.2.3"
 coil = "3.3.0"
 appCompat = "1.7.1"
-androidxCore = "1.17.0"
+androidxCore = "1.17.0-rc01"
 desugaring = "2.1.5"
-activityCompose = "1.12.0-alpha06"
+activityCompose = "1.12.0-alpha05"
 kotlinxCollectionsImmutable = "0.4.0"
 scrollbar = "2.2.0"
 reorderable = "2.5.1"
@@ -58,7 +58,7 @@ reviewKtx = "2.0.2"
 splashScreen = "1.2.0-rc01"
 
 espresso = "3.7.0"
-ksp = "2.2.10-2.0.2"
+ksp = "2.2.0-2.0.2"
 
 androidx-test-ext-junit = "1.3.0"
 documentfile = "1.1.0"
@@ -74,11 +74,11 @@ capturable = "3.0.1"
 moshi = "1.15.2"
 bouncycastle = "1.81"
 pdfviewer = "1.0.0-alpha10"
-fragmentCompose = "1.8.9"
+fragmentCompose = "1.8.8"
 
-firebaseCrashlyticsGradle = "3.0.6"
+firebaseCrashlyticsGradle = "3.0.5"
 aboutlibraries = "12.2.4"
-moduleGraphGradle = "0.12.1"
+moduleGraphGradle = "0.12.0"
 
 [libraries]
 androidx-fragment-compose = { module = "androidx.fragment:fragment-compose", version.ref = "fragmentCompose" }
@@ -86,7 +86,6 @@ androidx-pdfviewer-fragment = { module = "androidx.pdf:pdf-viewer-fragment", ver
 evaluator = { module = "com.github.T8RIN:KotlinEvaluator", version.ref = "evaluator" }
 aboutlibraries-m3 = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref = "aboutlibraries" }
 moshi = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi" }
-symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 trickle = { module = "com.github.t8rin:trickle", version.ref = "trickle" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 mlkit-document-scanner = { module = "com.google.android.gms:play-services-mlkit-document-scanner", version.ref = "mlkitDocumentScanner" }

@@ -121,6 +121,5 @@ include(":core:domain")
 include(":core:ui")
 include(":core:di")
 include(":core:crash")
-include(":core:ksp")
 
 include(":benchmark")

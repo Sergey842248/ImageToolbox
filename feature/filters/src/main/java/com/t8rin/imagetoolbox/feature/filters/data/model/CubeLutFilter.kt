@@ -17,19 +17,18 @@
 
 package com.t8rin.imagetoolbox.feature.filters.data.model
 
+import android.content.Context
 import android.graphics.Bitmap
 import androidx.core.net.toUri
 import com.t8rin.imagetoolbox.core.domain.model.FileModel
 import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
 import com.t8rin.imagetoolbox.core.domain.transformation.Transformation
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
-import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
-import com.t8rin.imagetoolbox.core.ui.utils.appContext
 import com.t8rin.trickle.Trickle
 import com.t8rin.trickle.TrickleUtils
 
-@FilterInject
 internal class CubeLutFilter(
+    private val context: Context,
     override val value: Pair<Float, FileModel> = 1f to FileModel(""),
 ) : Transformation<Bitmap>, Filter.CubeLut {
 
@@ -42,10 +41,7 @@ internal class CubeLutFilter(
     ): Bitmap {
         if (value.second.uri.isEmpty()) return input
 
-        val lutPath = TrickleUtils.getAbsolutePath(
-            uri = value.second.uri.toUri(),
-            context = appContext
-        )
+        val lutPath = TrickleUtils.getAbsolutePath(value.second.uri.toUri(), context)
 
         return Trickle.applyCubeLut(
             input = input,

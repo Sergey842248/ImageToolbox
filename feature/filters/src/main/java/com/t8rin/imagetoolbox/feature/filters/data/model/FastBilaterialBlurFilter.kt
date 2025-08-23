@@ -24,11 +24,9 @@ import com.t8rin.imagetoolbox.core.domain.transformation.Transformation
 import com.t8rin.imagetoolbox.core.domain.utils.NEAREST_ODD_ROUNDING
 import com.t8rin.imagetoolbox.core.domain.utils.roundTo
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
-import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
 
-@FilterInject
 internal class FastBilaterialBlurFilter(
-    override val value: Triple<Float, Float, Float> = Triple(11f, 10f, 3f),
+    override val value: Triple<Int, Float, Float> = Triple(11, 10f, 3f),
 ) : Transformation<Bitmap>, Filter.FastBilaterialBlur {
 
     override val cacheKey: String
@@ -41,7 +39,7 @@ internal class FastBilaterialBlurFilter(
         bitmap = input,
         spatialSigma = value.second,
         rangeSigma = value.third,
-        kernelSize = value.first.roundTo(NEAREST_ODD_ROUNDING).toInt()
+        kernelSize = value.first.toFloat().roundTo(NEAREST_ODD_ROUNDING).toInt()
     )
 
 }

@@ -62,7 +62,6 @@ import com.t8rin.imagetoolbox.feature.compare.presentation.components.CompareScr
 import com.t8rin.imagetoolbox.feature.compare.presentation.components.CompareScreenTopAppBar
 import com.t8rin.imagetoolbox.feature.compare.presentation.components.CompareShareSheet
 import com.t8rin.imagetoolbox.feature.compare.presentation.components.CompareType
-import com.t8rin.imagetoolbox.feature.compare.presentation.components.model.ifNotEmpty
 import com.t8rin.imagetoolbox.feature.compare.presentation.screenLogic.CompareComponent
 import kotlinx.coroutines.delay
 
@@ -83,12 +82,12 @@ fun CompareContent(
 
 
     LaunchedEffect(component.bitmapData) {
-        component.bitmapData?.ifNotEmpty { before, after ->
-            if (allowChangeColor) {
+        component.bitmapData?.let { (b, a) ->
+            if (allowChangeColor && a != null && b != null) {
                 delay(100L) //delay to perform screen rotation
                 themeState.updateColor(
-                    after.image.extractPrimaryColor()
-                        .blend(before.image.extractPrimaryColor(), 0.5f)
+                    a.second.extractPrimaryColor()
+                        .blend(b.second.extractPrimaryColor(), 0.5f)
                 )
             }
         }

@@ -22,12 +22,9 @@ import com.awxkee.aire.Aire
 import com.t8rin.imagetoolbox.core.domain.model.IntegerSize
 import com.t8rin.imagetoolbox.core.domain.transformation.Transformation
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
-import com.t8rin.imagetoolbox.core.ksp.annotations.FilterInject
-import kotlin.math.roundToInt
 
-@FilterInject
 internal class EqualizeHistogramAdaptiveLUVFilter(
-    override val value: Triple<Float, Float, Float> = Triple(3f, 3f, 128f)
+    override val value: Triple<Int, Int, Int> = Triple(3, 3, 128)
 ) : Transformation<Bitmap>, Filter.EqualizeHistogramAdaptiveLUV {
 
     override val cacheKey: String
@@ -38,9 +35,9 @@ internal class EqualizeHistogramAdaptiveLUVFilter(
         size: IntegerSize
     ): Bitmap = Aire.equalizeHistAdaptiveLUV(
         bitmap = input,
-        gridSizeHorizontal = value.first.roundToInt(),
-        gridSizeVertical = value.second.roundToInt(),
-        binsCount = value.third.roundToInt()
+        gridSizeHorizontal = value.first,
+        gridSizeVertical = value.second,
+        binsCount = value.third
     )
 
 }

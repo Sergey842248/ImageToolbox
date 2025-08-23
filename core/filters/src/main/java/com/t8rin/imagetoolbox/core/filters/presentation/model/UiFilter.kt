@@ -17,16 +17,16 @@
 
 package com.t8rin.imagetoolbox.core.filters.presentation.model
 
+import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.t8rin.imagetoolbox.core.filters.domain.model.Filter
 import com.t8rin.imagetoolbox.core.filters.domain.model.FilterParam
-import com.t8rin.imagetoolbox.core.ui.utils.appContext
 import kotlin.reflect.full.primaryConstructor
 
-sealed class UiFilter<T : Any>(
+sealed class UiFilter<T>(
     @StringRes val title: Int,
     val paramsInfo: List<FilterParam> = listOf(),
     override val value: T,
@@ -47,7 +47,8 @@ sealed class UiFilter<T : Any>(
     )
 
     fun <T : Any> copy(value: T): UiFilter<*> {
-        if (this.value::class.simpleName != value::class.simpleName) return newInstance()
+        if (this.value == null) return newInstance()
+        if (this.value!!::class.simpleName != value::class.simpleName) return newInstance()
         return runCatching {
             this::class.primaryConstructor?.run {
                 callBy(mapOf(parameters[0] to value))
@@ -156,7 +157,7 @@ sealed class UiFilter<T : Any>(
                 //Color
                 listOf(
                     UiHueFilter(),
-                    UiColorOverlayFilter(),
+                    UiColorFilter(),
                     UiNeonFilter(),
                     UiSaturationFilter(),
                     UiRGBFilter(),
@@ -387,9 +388,10 @@ sealed class UiFilter<T : Any>(
             )
         }
 
-        val sortedGroupedEntries
-            get() = groupedEntries.map { list ->
-                list.sortedBy { appContext.getString(it.title) }
+        fun groupedEntries(
+            context: Context,
+        ) = groupedEntries.map { list ->
+            list.sortedBy { context.getString(it.title) }
         }
     }
 
