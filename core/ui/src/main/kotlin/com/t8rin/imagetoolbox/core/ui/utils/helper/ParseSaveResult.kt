@@ -36,9 +36,6 @@ internal fun Activity.parseSaveResult(
 ) {
     when (saveResult) {
         is SaveResult.Error.Exception -> {
-            essentials.showFailureToast(
-                throwable = saveResult.throwable
-            )
         }
 
         is SaveResult.Success -> {
@@ -150,12 +147,6 @@ internal fun Activity.parseSaveResults(
             icon = Icons.Rounded.ErrorOutline,
             duration = ToastDuration.Long
         )
-        essentials.showToast(
-            message = getString(
-                R.string.smth_went_wrong,
-                errorSaveResult?.throwable?.localizedMessage ?: ""
-            )
-        )
     } else {
         val errorSaveResult = results.firstOfType<SaveResult.Error>()
 
@@ -163,12 +154,6 @@ internal fun Activity.parseSaveResults(
             message = getString(R.string.failed_to_save, failed),
             icon = Icons.Rounded.ErrorOutline,
             duration = ToastDuration.Long
-        )
-        essentials.showToast(
-            message = getString(
-                R.string.smth_went_wrong,
-                errorSaveResult?.throwable?.localizedMessage ?: ""
-            )
         )
     }
 }
