@@ -17,11 +17,17 @@
 
 package com.t8rin.imagetoolbox.feature.settings.presentation.components
 
+import android.app.Activity
+import android.content.Context
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.t8rin.imagetoolbox.core.resources.R
@@ -29,19 +35,39 @@ import com.t8rin.imagetoolbox.core.resources.icons.FileReplace
 import com.t8rin.imagetoolbox.core.settings.presentation.provider.LocalSettingsState
 import com.t8rin.imagetoolbox.core.ui.widget.modifier.ShapeDefaults
 import com.t8rin.imagetoolbox.core.ui.widget.preferences.PreferenceRowSwitch
+import com.t8rin.imagetoolbox.feature.settings.data.isExternalStorageManager
+import com.t8rin.imagetoolbox.feature.settings.data.openManageExternalStorageSettingsIntent
 
 @Composable
 fun OverwriteFilesSettingItem(
-    onClick: () -> Unit,
+    onClick: (Boolean) -> Unit,
     shape: Shape = ShapeDefaults.center,
     modifier: Modifier = Modifier.padding(horizontal = 8.dp)
 ) {
     val settingsState = LocalSettingsState.current
+    val context = LocalContext.current
+
+    val manageExternalStorageLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) {
+        onClick(context.isExternalStorageManager())
+    }
+
     PreferenceRowSwitch(
         shape = shape,
         modifier = modifier,
         onClick = {
-            onClick()
+            if (!settingsState.overwriteFiles) { // If trying to enable overwriting
+                if (!context.isExternalStorageManager()) {
+                    context.openManageExternalStorageSettingsIntent()?.let {
+                        manageExternalStorageLauncher.launch(it)
+                    }
+                } else {
+                    onClick(true)
+                }
+            } else { // If trying to disable overwriting
+                onClick(false)
+            }
         },
         enabled = !settingsState.randomizeFilename && settingsState.hashingTypeForFilename == null,
         title = stringResource(R.string.overwrite_files),

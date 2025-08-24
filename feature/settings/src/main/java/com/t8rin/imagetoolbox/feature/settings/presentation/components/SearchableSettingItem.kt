@@ -55,6 +55,7 @@ internal fun SearchableSettingItem(
     onNavigateToEasterEgg: () -> Unit,
     onNavigateToSettings: () -> Unit,
     onNavigateToLibrariesInfo: () -> Unit,
+    onUpdateOverwriteFiles: (Boolean) -> Unit,
     isUpdateAvailable: Boolean
 ) {
     Column(
@@ -104,7 +105,8 @@ internal fun SearchableSettingItem(
                 isUpdateAvailable = isUpdateAvailable,
                 onNavigateToEasterEgg = onNavigateToEasterEgg,
                 onNavigateToSettings = onNavigateToSettings,
-                onNavigateToLibrariesInfo = onNavigateToLibrariesInfo
+                onNavigateToLibrariesInfo = onNavigateToLibrariesInfo,
+                onUpdateOverwriteFiles = onUpdateOverwriteFiles
             )
         }
         Spacer(Modifier.height(8.dp))

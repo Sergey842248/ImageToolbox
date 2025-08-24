@@ -355,6 +355,10 @@ class SettingsComponent @AssistedInject internal constructor(
 
     fun setVibrationStrength(strength: Int) = settingsScope { setVibrationStrength(strength) }
 
+    fun updateOverwriteFiles(value: Boolean) = settingsScope {
+        if (value) toggleOverwriteFiles()
+    }
+
     fun toggleOverwriteFiles() = settingsScope { toggleOverwriteFiles() }
 
     fun setDefaultImageScaleMode(imageScaleMode: ImageScaleMode) =

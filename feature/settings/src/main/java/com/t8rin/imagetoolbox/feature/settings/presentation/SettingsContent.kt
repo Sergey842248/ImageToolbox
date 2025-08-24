@@ -356,7 +356,8 @@ fun SettingsContent(
                                                     },
                                                     onNavigateToLibrariesInfo = {
                                                         component.onNavigate(Screen.LibrariesInfo)
-                                                    }
+                                                    },
+                                                    onUpdateOverwriteFiles = component::updateOverwriteFiles
                                                 )
                                             }
                                         }
@@ -384,7 +385,8 @@ fun SettingsContent(
                                                     },
                                                     onNavigateToLibrariesInfo = {
                                                         component.onNavigate(Screen.LibrariesInfo)
-                                                    }
+                                                    },
+                                                    onUpdateOverwriteFiles = component::updateOverwriteFiles
                                                 )
                                             }
                                         }
@@ -421,7 +423,8 @@ fun SettingsContent(
                                 },
                                 onNavigateToLibrariesInfo = {
                                     component.onNavigate(Screen.LibrariesInfo)
-                                }
+                                },
+                                onUpdateOverwriteFiles = component::updateOverwriteFiles
                             )
                         }
                     }

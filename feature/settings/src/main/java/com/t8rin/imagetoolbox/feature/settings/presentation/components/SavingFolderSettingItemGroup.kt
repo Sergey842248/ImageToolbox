@@ -121,7 +121,7 @@ fun SavingFolderSettingItemGroup(
         )
         Spacer(modifier = Modifier.height(4.dp))
         OverwriteFilesSettingItem(
-            onClick = onOverwriteToggle,
+            onClick = { onOverwriteToggle() },
             shape = ShapeDefaults.bottom,
             modifier = Modifier
                 .fillMaxWidth()

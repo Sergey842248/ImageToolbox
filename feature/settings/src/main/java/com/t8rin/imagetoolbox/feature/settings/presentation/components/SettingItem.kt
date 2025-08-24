@@ -48,6 +48,7 @@ internal fun SettingItem(
     onNavigateToEasterEgg: () -> Unit,
     onNavigateToSettings: () -> Unit,
     onNavigateToLibrariesInfo: () -> Unit,
+    onUpdateOverwriteFiles: (Boolean) -> Unit,
     isUpdateAvailable: Boolean,
     containerColor: Color = MaterialTheme.colorScheme.surface,
 ) {
@@ -288,7 +289,7 @@ internal fun SettingItem(
             }
 
             Setting.OverwriteFiles -> {
-                OverwriteFilesSettingItem(onClick = component::toggleOverwriteFiles)
+                OverwriteFilesSettingItem(onClick = onUpdateOverwriteFiles)
             }
 
             Setting.Reset -> {
