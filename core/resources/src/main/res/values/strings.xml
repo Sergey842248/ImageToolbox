@@ -1374,6 +1374,7 @@
     <string name="select_webp_image_to_start">Pick WEBP image to start</string>
     <string name="manage_storage_extra_types">No full access to files</string>
     <string name="manage_storage_extra_types_sub">Allow all files access to see JXL, QOI and other images that are not recognized as images on Android. Without the permission Image Toolbox is unable to show those images</string>
+    <string name="manage_external_storage_permission_rationale">To enable overwriting of original files and full access to all image types, please grant "All files access" permission in the system settings. This is required for the app to function correctly with these features.</string>
     <string name="default_draw_color">Default Draw Color</string>
     <string name="default_draw_path_mode">Default Draw Path Mode</string>
     <string name="add_timestamp">Add Timestamp</string>

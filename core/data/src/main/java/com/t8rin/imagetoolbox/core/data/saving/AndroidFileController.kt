@@ -166,34 +166,20 @@ internal class AndroidFileController @Inject constructor(
             val originalUri = saveTarget.originalUri.toUri()
 
             if (settingsState.overwriteFiles) {
-                runCatching {
-                    if (originalUri == Uri.EMPTY) throw IllegalStateException()
+                runSuspendCatching {
+                    if (originalUri == Uri.EMPTY) throw IllegalStateException("Original URI is empty")
 
-                    context.openFileDescriptor(
-                        uri = originalUri,
-                        mode = FileMode.WriteTruncate
-                    )
-                }.onFailure {
-                    settingsManager.setImagePickerMode(3)
-                    return@withContext SaveResult.Error.Exception(
-                        Exception(
-                            getString(
-                                R.string.overwrite_file_requirements
-                            )
-                        )
-                    )
-                }.getOrNull()?.use { parcel ->
-                    FileOutputStream(parcel.fileDescriptor).use { out ->
-                        out.write(data)
+                    context.contentResolver.openOutputStream(originalUri, "wt")?.use { outputStream ->
+                        outputStream.write(data)
                         context.copyMetadata(
                             initialExif = (saveTarget as? ImageSaveTarget)?.metadata,
                             fileUri = originalUri,
                             keepOriginalMetadata = keepOriginalMetadata,
                             originalUri = originalUri
                         )
-                    }
+                    } ?: throw IllegalStateException("Failed to open output stream for URI: $originalUri")
 
-                    return@withContext SaveResult.Success(
+                    SaveResult.Success(
                         message = getString(
                             R.string.saved_to_original,
                             originalUri.getFilename(context).toString()
@@ -201,6 +187,8 @@ internal class AndroidFileController @Inject constructor(
                         isOverwritten = true,
                         savingPath = savingPath
                     )
+                }.getOrElse {
+                    return@withContext SaveResult.Error.Exception(it)
                 }
             } else {
                 val documentFile: DocumentFile?
