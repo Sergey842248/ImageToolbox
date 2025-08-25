@@ -27,7 +27,7 @@ android {
 
     val supportedAbi = arrayOf("armeabi-v7a", "arm64-v8a", "x86_64")
 
-    namespace = "com.t8rin.imagetoolbox"
+    namespace = "com.future.imagetoolbox"
 
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
