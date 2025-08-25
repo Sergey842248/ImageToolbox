@@ -8,7 +8,13 @@
 
 # Image Toolbox
 
+
+
+
 </div>
+
+# Improvements:
+- Allow overwriting original image for better usability
 
 </br>
 
